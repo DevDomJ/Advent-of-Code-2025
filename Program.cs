@@ -1,0 +1,1 @@
+Console.WriteLine(RiddleDay8.GetSolution());
