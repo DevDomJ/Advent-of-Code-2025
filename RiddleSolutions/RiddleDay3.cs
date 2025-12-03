@@ -1,5 +1,3 @@
-using System.Diagnostics.Contracts;
-
 public class RiddleDay3
 {
 	public static (int First, int Second) GetSolution(string inputPath)
