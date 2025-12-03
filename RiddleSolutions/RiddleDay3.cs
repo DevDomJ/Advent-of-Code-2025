@@ -1,19 +1,33 @@
 public class RiddleDay3
 {
-	public static (int First, int Second) GetSolution(string inputPath)
+	public static (long First, long Second) GetSolution(string inputPath)
 	{
 		var batteryBanks = InputParser.GetInputStringLines(inputPath);
-		var maxVoltages = new List<int>();
+		var partOneMaxVoltages = new List<long>();
+		var partOneMaxBatteries = 2;
+		var partTwoMaxVoltages = new List<long>();
+		var partTwoMaxBatteries = 12;
 		foreach (var bank in batteryBanks)
 		{
-			// find maximum digit in bank except last digit.
-			var firstDigit = FindMaximumDigitInString(bank.Substring(0, bank.Length - 1));
-			// find maximum in bank after first digit.
-			var secondDigit = FindMaximumDigitInString(bank.Substring(bank.IndexOf(firstDigit) + 1));
-			// combine both digits to form maximum voltage.
-			maxVoltages.Add(int.Parse(firstDigit.ToString() + secondDigit));
+			partOneMaxVoltages.Add(GetMaximumVoltageFromBank(bank, partOneMaxBatteries));
+			partTwoMaxVoltages.Add(GetMaximumVoltageFromBank(bank, partTwoMaxBatteries));
 		}
-		return (maxVoltages.Sum(), 0);
+		return (partOneMaxVoltages.Sum(), partTwoMaxVoltages.Sum());
+	}
+
+	public static long GetMaximumVoltageFromBank(string bank, int maxBatteries)
+	{
+		var digits = new char[maxBatteries];
+		var indexOfLastUsedDigit = -1;
+		for (int batteriesLeft = maxBatteries; batteriesLeft > 0; batteriesLeft--)
+		{
+			var newStartIndex = indexOfLastUsedDigit + 1;
+			// Find maximum digit in sub string that makes sure there are enough digits left to fill the remaining batteries
+			digits[maxBatteries - batteriesLeft] = FindMaximumDigitInString(bank.Substring(newStartIndex, bank.Length - batteriesLeft - newStartIndex + 1));
+			indexOfLastUsedDigit = bank.IndexOf(digits[maxBatteries - batteriesLeft], newStartIndex);
+		}
+		// Combine digits to form the maximum voltage number
+		return long.Parse(digits.Select(digit => digit.ToString()).Aggregate((a, b) => a + b));
 	}
 
 	public static char FindMaximumDigitInString(string bank)
