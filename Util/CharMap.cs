@@ -55,4 +55,50 @@ public class CharMap
 	{
 		return Map[x, y];
 	}
+
+	public List<Point> GetSurroundingPointsForRank(Point position, int rank)
+	{
+		return GetSurroundingSizesForRank(rank).Select(size => position + size).Where(IsPointOnMap).ToList();
+	}
+
+	/// <summary>
+	/// Get Surrrounding Sizes for rank. Sizes are the relative positions around a point at the given rank. Rank means the n-th layer around the point.
+	/// </summary>
+	/// <param name="rank"></param>
+	/// <returns></returns>
+	public List<Size> GetSurroundingSizesForRank(int rank)
+	{
+		var surroundingSizes = new List<Size>();
+		if (rank > 0)
+		{
+			for (int i = -rank; i <= rank; i++)
+			{
+				surroundingSizes.Add(new Size(i, rank));
+			}
+			for (int i = rank - 1; i >= -rank; i--)
+			{
+				surroundingSizes.Add(new Size(rank, i));
+			}
+			for (int i = rank - 1; i >= -rank; i--)
+			{
+				surroundingSizes.Add(new Size(i, -rank));
+			}
+			for (int i = -rank + 1; i < rank; i++)
+			{
+				surroundingSizes.Add(new Size(-rank, i));
+			}
+		}
+		return surroundingSizes;
+	}
+
+	public void eachCharacterDo(Action<Point, char> action)
+	{
+		for (int y = 0; y <= VerticalEdge; y++)
+		{
+			for (int x = 0; x <= HorizontalEdge; x++)
+			{
+				action(new Point(x, y), Map[x, y]);
+			}
+		}
+	}
 }
