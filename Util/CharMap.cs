@@ -56,6 +56,16 @@ public class CharMap
 		return Map[x, y];
 	}
 
+	public void SetElementAtPosition(Point point, char character)
+	{
+		SetElementAtPosition(point.X, point.Y, character);
+	}
+
+	public void SetElementAtPosition(int x, int y, char character)
+	{
+		Map[x, y] = character;
+	}
+
 	public List<Point> GetSurroundingPointsForRank(Point position, int rank)
 	{
 		return GetSurroundingSizesForRank(rank).Select(size => position + size).Where(IsPointOnMap).ToList();
