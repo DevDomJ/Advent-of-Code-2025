@@ -111,4 +111,18 @@ public class CharMap
 			}
 		}
 	}
+
+	public void PrintMapToConsole()
+	{
+		Console.WriteLine("------------------------------------------------");
+		for (int y = 0; y <= VerticalEdge; y++)
+		{
+			for (int x = 0; x <= HorizontalEdge; x++)
+			{
+				Console.Write(Map[x, y]);
+			}
+			Console.WriteLine();
+		}
+		Console.WriteLine("------------------------------------------------");
+	}
 }
